@@ -4,7 +4,6 @@ const instance = axios.create({
     baseURL: process.env.REACT_APP_API_URI,
 
   });
-// Add a request interceptor
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
     let localStorageData = window.localStorage.getItem('persist:shop/user')

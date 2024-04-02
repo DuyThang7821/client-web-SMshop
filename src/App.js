@@ -26,7 +26,6 @@ import {
   Personal,
   History,
   Wishlist,
-  MyCart,
   Checkout,
 } from "pages/member";
 import path from "./ultils/path";
