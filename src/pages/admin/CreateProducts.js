@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { InputForm, Select, Button, MarkdownEditor, Loading } from "components";
+import { InputForm, Select, Button, Loading } from "components";
 import { useForm } from "react-hook-form";
-import { useSelector , useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { validate, getBase64 } from "ultils/helpers";
 import { toast } from "react-toastify";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { apiCreateProduct } from "apis";
-import {showModal} from 'store/app/appSlice'
+import { showModal } from "store/app/appSlice";
 
 const CreateProducts = () => {
   const { categories } = useSelector((state) => state.app);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
@@ -72,9 +72,9 @@ const CreateProducts = () => {
       if (finalPayload.images) {
         for (let image of finalPayload.images) formData.append("images", image);
       }
-      dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
+      dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
       const response = await apiCreateProduct(formData);
-      dispatch(showModal({isShowModal: false, modalChildren: null}))
+      dispatch(showModal({ isShowModal: false, modalChildren: null }));
       if (response.success) {
         toast.success(response.mes);
         reset();
@@ -180,14 +180,23 @@ const CreateProducts = () => {
               fullWidth
             />
           </div>
-          <MarkdownEditor
-            name="description"
-            changeValue={changeValue}
-            label="Mô tả sản phẩm :"
-            invalidFields={invalidFields}
-            setInvalidFields={setInvalidFields}
-          />
-
+          <div className="flex flex-col gap-2 mt-8">
+            <label className="font-semibold" htmlFor="description">
+              Mô tả sản phẩm :
+            </label>
+            <textarea
+              id="description"
+              {...register("description", { required: "Need fill" })}
+              onChange={(e) => changeValue(e.target.value)}
+              value={payload.description}
+              className="border-none outline-none rounded-md p-2 h-40"
+            />
+            {invalidFields.includes("description") && (
+              <small className="text-xs text-red-500">
+                Description is required.
+              </small>
+            )}
+          </div>
           <div className="flex flex-col gap-2 mt-8">
             <label className="font-semibold" htmlFor="thumb">
               Tải ảnh lên
@@ -214,7 +223,7 @@ const CreateProducts = () => {
           )}
           <div className="flex flex-col gap-2 mt-8">
             <label className="font-semibold" htmlFor="products">
-             Tải ảnh của sản phẩm
+              Tải ảnh của sản phẩm
             </label>
             <input
               type="file"
