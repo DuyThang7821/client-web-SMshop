@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 
 const Button = ({
   children,
@@ -8,7 +8,7 @@ const Button = ({
   iconsAfter,
   fw,
   name,
-  type ='button',
+  type = "button",
 }) => {
   return (
     <button

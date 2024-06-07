@@ -1,12 +1,13 @@
-import { apiGetOrders, apiGetUserOrders } from "apis";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { createSearchParams, useSearchParams } from "react-router-dom";
 import { CustomSelect, Pagination } from "components";
 import InputForm from "components/inputs/inputForm";
 import WithBaseComponent from "hocs/withBaseComponent";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { createSearchParams, useSearchParams } from "react-router-dom";
+import { apiGetUserOrders } from "apis";
 import { statusOrders } from "ultils/contants";
+import { useForm } from "react-hook-form";
 
 const History = ({ navigate, location }) => {
   const [orders, setOrders] = useState(null);
@@ -16,10 +17,10 @@ const History = ({ navigate, location }) => {
     register,
     formState: { errors },
     watch,
-    setValue,
   } = useForm();
-  const q = watch("q");
+
   const status = watch("status");
+
   const fetchOrders = async (params) => {
     const response = await apiGetUserOrders({
       ...params,
@@ -30,6 +31,7 @@ const History = ({ navigate, location }) => {
       setCounts(response.counts);
     }
   };
+
   useEffect(() => {
     const pr = Object.fromEntries([...params]);
     fetchOrders(pr);
@@ -41,6 +43,7 @@ const History = ({ navigate, location }) => {
       search: createSearchParams({ status: value }).toString(),
     });
   };
+
   return (
     <div className="w-full relative px-4">
       <header className="text-3xl font-bold py-4 border-b border-b-blue-800">
@@ -70,13 +73,12 @@ const History = ({ navigate, location }) => {
 
       <table className="table-auto w-full">
         <thead>
-          <tr className=" className='text-center py-2' bg-sky-900 text-white border-white py-2">
-            <th className="text-center py-2">ID</th>
-            <th className="text-center py-2">Sản phẩm</th>
-            <th className="text-center py-2">Tổng tiền</th>
-            <th className="text-center py-2">Trạng thái</th>
-            <th className="text-center py-2">Ngày tạo</th>
-            
+          <tr className="text-center py-2 bg-sky-900 text-white border-white">
+            <th>ID</th>
+            <th>Sản phẩm</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Ngày tạo</th>
           </tr>
         </thead>
 
@@ -89,56 +91,31 @@ const History = ({ navigate, location }) => {
                   idx +
                   1}
               </td>
-              <td className="text-center max-w-[300px] py-2">
-                <span className="grid grid-cols-4 gap-4">
+              <td className="text-center py-2">
+                <div className="max-h-[200px] overflow-auto">
                   {el.products?.map((item) => (
-                    <span className="flex col-span-1 items-center gap-2" key={item._id}>
-                      {/* {` • ${item.title} - ${item.color}`} */}
+                    <div className="flex items-center gap-2" key={item._id}>
                       <img
                         src={item.thumbnail}
                         alt="thumb"
                         className="w-8 h-8 rounded-md object-cover"
                       />
-                      <span className="flex flex-col">
-                        <span className="text-main text-sm">
-                          {item.title}
-                        </span>
+                      <div className="flex flex-col">
+                        <span className="text-main text-sm">{item.title}</span>
                         <span className="flex items-center text-xs gap-2">
                           <span>So luong:</span>
-                          <span className="text-main">
-                            {item.quantity}
-                          </span>
+                          <span className="text-main">{item.quantity}</span>
                         </span>
-                      </span>
-                    </span>
+                      </div>
+                    </div>
                   ))}
-                </span>
+                </div>
               </td>
               <td className="text-center py-2">{el.total + "💲"}</td>
               <td className="text-center py-2">{el.status}</td>
               <td className="text-center py-2">
                 {moment(el.createdAt)?.format("DD/MM/YYYY")}
               </td>
-              {/* <td className="text-center py-2">
-                <span
-                  onClick={() => setEditProduct(el)}
-                  className="text-orange-600 hover:underline cursor-pointer px-1 inline-block"
-                >
-                  <BiEdit size={20} />
-                </span>
-                <span
-                  onClick={() => handleDeleteProduct(el._id)}
-                  className="text-red-600 hover:underline cursor-pointer px-1 inline-block"
-                >
-                  <RiDeleteBin6Line size={20} />
-                </span>
-                <span
-                  onClick={() => setCustomizeVarriant(el)}
-                  className="text-blue-600 hover:underline cursor-pointer px-1 inline-block"
-                >
-                  <BiCustomize size={20} />
-                </span>
-              </td> */}
             </tr>
           ))}
         </tbody>
@@ -149,4 +126,5 @@ const History = ({ navigate, location }) => {
     </div>
   );
 };
+
 export default WithBaseComponent(History);

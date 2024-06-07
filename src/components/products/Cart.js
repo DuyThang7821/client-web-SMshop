@@ -25,7 +25,7 @@ const Cart = ({ dispatch, navigate }) => {
       className="p-6 w-[500px] h-screen  bg-black grid grid-rows-10 text-white"
     >
       <header className="row-span-1 h-full border-b border-gray-400 flex items-center justify-between font-bold text-2xl">
-        <span>Giỏ hàng của bạn</span>
+        <span>Your cart</span>
         <span
           onClick={() => dispatch(showCart())}
           className="cursor-pointer p-2"
@@ -35,7 +35,7 @@ const Cart = ({ dispatch, navigate }) => {
       </header>
       <section className="row-span-7 flex flex-col gap-3 h-full max-h-full overflow-y-auto py-3">
         {!currentCart && (
-          <span className="text-xs italic">Giỏ hàng của bạn đang trống</span>
+          <span className="text-xs italic">Your shopping cart is empty</span>
         )}
         {currentCart &&
           currentCart?.map((el) => (
@@ -68,7 +68,7 @@ const Cart = ({ dispatch, navigate }) => {
       </section>
       <div className="row-span-2 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between pt-4 border-t">
-          <span>Tổng tiền:</span>
+          <span>Total amount:</span>
           <span>
             {formatMoney(
               currentCart?.reduce(
@@ -79,12 +79,12 @@ const Cart = ({ dispatch, navigate }) => {
           </span>
         </div>
         <span className="text-centetext-white italic text-xs">
-        Vận chuyển, thuế và giảm giá được tính khi thanh toán.
+        Shipping, taxes and discounts are calculated at checkout.
         </span>
         <Button handleOnClick={() => {
           dispatch(showCart())
           navigate(`/${path.MEMBER}/${path.DETAIL_CART}`)
-        }} style="rounded-md w-full bg-main py-3">Vào giỏ hàng</Button>
+        }} style="rounded-md w-full bg-main py-3">Go to cart</Button>
       </div>
     </div>
   );

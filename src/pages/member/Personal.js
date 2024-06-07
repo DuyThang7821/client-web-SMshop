@@ -1,7 +1,7 @@
-import { Button } from "components";
-import InputForm from "components/inputs/inputForm";
-import moment from "moment";
 import React, { useEffect } from "react";
+import { Button } from "components";
+import inputForm from "components/inputs/inputForm"; // Import component InputForm correctly
+import moment from "moment";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import avatar from "assets/avatarDefault.jpg";
@@ -10,18 +10,20 @@ import { getCurrent } from "store/user/asyncActions";
 import { toast } from "react-toastify";
 import WithBaseComponent from "hocs/withBaseComponent";
 import { useSearchParams } from "react-router-dom";
+import InputForm from "components/inputs/inputForm";
 
-const Personal = ({navigate}) => {
+const Personal = ({ navigate }) => {
   const {
     register,
     formState: { errors, isDirty },
     handleSubmit,
     reset,
-    watch
+    watch,
   } = useForm();
   const { current } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams();
+
   useEffect(() => {
     reset({
       firstname: current?.firstname,
@@ -32,6 +34,7 @@ const Personal = ({navigate}) => {
       address: current?.address,
     });
   }, [current]);
+
   const handleUpdateInfor = async (data) => {
     const formData = new FormData();
 
@@ -43,7 +46,7 @@ const Personal = ({navigate}) => {
     if (response.success) {
       dispatch(getCurrent());
       toast.success(response.mes);
-      if (searchParams.get('redirect')) navigate(searchParams.get('redirect'))
+      if (searchParams.get("redirect")) navigate(searchParams.get("redirect"));
     } else toast.error(response.mes);
   };
 
@@ -54,7 +57,7 @@ const Personal = ({navigate}) => {
       </header>
       <form
         onSubmit={handleSubmit(handleUpdateInfor)}
-        className="w-3/5 mx-auto py-8 flex flex-col gap-4"
+        className="w-full md:w-3/5 mx-auto py-8 flex flex-col gap-4"
       >
         <InputForm
           label="Tên của bạn"
@@ -150,4 +153,5 @@ const Personal = ({navigate}) => {
     </div>
   );
 };
+
 export default WithBaseComponent(Personal);

@@ -2,10 +2,17 @@ import React, { memo, useEffect, useState } from "react";
 import icons from "../../ultils/icons";
 import { colors } from "../../ultils/contants";
 import { apiGetProducts } from "../../apis";
-import { createSearchParams, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import path from "../../ultils/path";
-import useDebounce from '../../hooks/useDebounce'
+import useDebounce from "../../hooks/useDebounce";
+
 const { AiOutlineDown } = icons;
+
 const SearchItem = ({
   name,
   activeClick,
@@ -15,12 +22,13 @@ const SearchItem = ({
   const navigate = useNavigate();
   const [selected, setSelected] = useState([]);
   const { category } = useParams();
-  const [params] = useSearchParams()
+  const [params] = useSearchParams();
   const [price, setPrice] = useState({
     from: "",
     to: "",
   });
   const [bestPrice, setBestPrice] = useState(null);
+
   const handleSelect = (e) => {
     const alreadyEl = selected.find((el) => el === e.target.value);
     if (alreadyEl)
@@ -28,53 +36,55 @@ const SearchItem = ({
     else setSelected((prev) => [...prev, e.target.value]);
     changeActiveFilter(null);
   };
+
   const fetchBestPriceProduct = async () => {
     const response = await apiGetProducts({ sort: "-price", limit: "1" });
     if (response?.success) setBestPrice(response.products[0]?.price);
   };
 
-
   useEffect(() => {
-    let param = []
-    for (let i of params.entries()) param.push(i)
-    const queries = {}
-    for (let i of params) queries[i[0]] = i[1]
+    let param = [];
+    for (let i of params.entries()) param.push(i);
+    const queries = {};
+    for (let i of params) queries[i[0]] = i[1];
     if (selected.length > 0) {
-      queries.color = selected.join(','); 
-      queries.page = 1
-    } else delete queries.color 
+      queries.color = selected.join(",");
+      queries.page = 1;
+    } else delete queries.color;
     navigate({
       pathname: `/${category}`,
       search: createSearchParams(queries).toString(),
-    })
-    
+    });
   }, [selected]);
+
   useEffect(() => {
     if (type === "input") fetchBestPriceProduct();
   }, [type]);
 
-  useEffect(()=>{
-    if(price.from && price.to && price.from > price.to) alert('From price cannot be greater than To price')
-  },[price])
+  useEffect(() => {
+    if (price.from && price.to && price.from > price.to)
+      alert("From price cannot be greater than To price");
+  }, [price]);
 
-  const debouncePriceFrom = useDebounce(price.from, 500)
-  const debouncePriceTo = useDebounce(price.to, 500)
-  useEffect (()=>{
-    let param = []
-    for (let i of params.entries()) param.push(i)
-    const queries = {}
-    for (let i of params) queries[i[0]] = i[1]
-    
-    if(Number (price.from)> 0) queries.from = price.from
-    else delete queries.from
-    if(Number (price.to) > 0) queries.to = price.to
-    else delete queries.to
-    queries.page = 1
+  const debouncePriceFrom = useDebounce(price.from, 500);
+  const debouncePriceTo = useDebounce(price.to, 500);
+
+  useEffect(() => {
+    let param = [];
+    for (let i of params.entries()) param.push(i);
+    const queries = {};
+    for (let i of params) queries[i[0]] = i[1];
+
+    if (Number(price.from) > 0) queries.from = price.from;
+    else delete queries.from;
+    if (Number(price.to) > 0) queries.to = price.to;
+    else delete queries.to;
+    queries.page = 1;
     navigate({
       pathname: `/${category}`,
       search: createSearchParams(queries).toString(),
-    })
-  },[debouncePriceFrom,debouncePriceTo])
+    });
+  }, [debouncePriceFrom, debouncePriceTo]);
 
   return (
     <div
@@ -84,7 +94,7 @@ const SearchItem = ({
       <span className="capitalize">{name}</span>
       <AiOutlineDown />
       {activeClick === name && (
-        <div className="z-10 absolute top-[calc(100%+1px)] left-0 w-fit p-4 border bg-white text-black min-w-[150px]">
+        <div className="z-10 absolute top-[calc(100%+1px)] left-0 w-full sm:w-fit p-4 border bg-white text-black min-w-[150px]">
           {type === "checkbox" && (
             <div className="">
               <div className="p-4 items-center flex justify-between gap-8 border-b">
@@ -93,7 +103,7 @@ const SearchItem = ({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelected([]);
-                    changeActiveFilter(null)
+                    changeActiveFilter(null);
                   }}
                   className="cursor-pointer underline hover:text-main"
                 >
@@ -126,23 +136,23 @@ const SearchItem = ({
           )}
           {type === "input" && (
             <div onClick={(e) => e.stopPropagation()}>
-              <div className="p-4 items-center flex justify-between gap-8 border-b">
-                <span className="whitespace-nowrap">{`The highest price is ${Number(
+              <div className="p-4 items-center flex flex-col sm:flex-row justify-between gap-4 sm:gap-8 border-b">
+                <span className="whitespace-normal">{`The highest price is ${Number(
                   bestPrice
-                ).toLocaleString()} VNDDefault input value is USD`}</span>
+                ).toLocaleString()} VND Default input value is USD`}</span>
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPrice({from: '' , to: ''});
-                    changeActiveFilter(null)
+                    setPrice({ from: "", to: "" });
+                    changeActiveFilter(null);
                   }}
                   className="cursor-pointer underline hover:text-main"
                 >
                   Reset
                 </span>
               </div>
-              <div className="flex items-center p-2 gap-2">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col p-2 gap-2 sm:flex-row">
+                <div className="flex flex-col gap-2">
                   <label htmlFor="from">From</label>
                   <input
                     value={price.from}
@@ -154,8 +164,7 @@ const SearchItem = ({
                     id="from"
                   />
                 </div>
-
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col gap-2">
                   <label htmlFor="to">To</label>
                   <input
                     value={price.to}
@@ -175,4 +184,5 @@ const SearchItem = ({
     </div>
   );
 };
+
 export default memo(SearchItem);

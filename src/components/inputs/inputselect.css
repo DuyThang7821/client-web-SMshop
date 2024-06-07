@@ -1,0 +1,12 @@
+@media (max-width: 640px) {
+    .mobile-form-select {
+      width: 100%;
+    }
+    .mobile-form-options {
+      width: 100%; /* Đảm bảo option có cùng chiều rộng với nút chọn */
+      max-width: 100%; /* Giữ kích thước tối đa không vượt quá chiều rộng của phần tử cha */
+      box-sizing: border-box; /* Đảm bảo chiều rộng bao gồm cả padding và border */
+    }
+  }
+  
+  

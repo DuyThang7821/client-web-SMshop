@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState, useCallback } from "react";
+import React, { memo, useState } from "react";
 import { productInfoTabs } from "../../ultils/contants";
 import { Votebar, Button, VoteOption, Comment } from "..";
 import { renderStarFromNumber } from "../../ultils/helpers";
@@ -30,6 +30,7 @@ const ProductInfomation = ({
     rerender();
     dispatch(showModal({ isShowModal: false, modalChildren: null }));
   };
+
   const handleVoteNow = () => {
     if (!isLoggedIn) {
       Swal.fire({
@@ -57,8 +58,8 @@ const ProductInfomation = ({
   };
 
   return (
-    <div>
-      <div className="flex items-center gap-2 relative bottom-[-1px]">
+    <div className="p-4">
+      <div className="flex items-center gap-2 relative bottom-[-1px] overflow-x-auto">
         {productInfoTabs.map((el) => (
           <span
             className={`py-2 px-4 cursor-pointer ${
@@ -73,15 +74,14 @@ const ProductInfomation = ({
           </span>
         ))}
       </div>
-      <div className=" w-full border p-4">
+      <div className="w-full border p-4">
         {productInfoTabs.some((el) => el.id === activedTab) &&
           productInfoTabs.find((el) => el.id === activedTab)?.content}
       </div>
 
-      <div className="flex flex-col py-8 w-main">
-
-        <div className="flex border">
-          <div className="flex-4 flex-col flex items-center  justify-center">
+      <div className="flex flex-col py-8 max-w-[1200px] mx-auto">
+        <div className="flex flex-col md:flex-row border">
+          <div className="md:flex-1 flex flex-col items-center justify-center p-4">
             <span className="font-semibold text-3xl">{`${totalRatings}/5`}</span>
             <span className="flex items-center gap-1">
               {renderStarFromNumber(totalRatings)?.map((el, index) => (
@@ -91,7 +91,7 @@ const ProductInfomation = ({
             <span className="text-sm">{`${ratings?.length} Đánh giá và phản hồi`}</span>
           </div>
 
-          <div className="flex-6  p-4 gap-2 flex flex-col">
+          <div className="md:flex-1 p-4 gap-2 flex flex-col">
             {Array.from(Array(5).keys())
               .reverse()
               .map((el) => (
@@ -108,7 +108,7 @@ const ProductInfomation = ({
         </div>
         <div className="p-4 flex items-center justify-center text-sm flex-col gap-2">
           <span>Bạn có muốn đánh giá sản phẩm này không ?</span>
-          <Button handleOnClick={handleVoteNow}>Gữi đánh giá</Button>
+          <Button handleOnClick={handleVoteNow}>Gửi đánh giá</Button>
         </div>
         <div className="flex flex-col gap-4">
           {ratings?.map((el) => (
@@ -125,4 +125,5 @@ const ProductInfomation = ({
     </div>
   );
 };
+
 export default memo(ProductInfomation);

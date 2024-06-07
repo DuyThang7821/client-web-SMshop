@@ -30,13 +30,13 @@ const Products = () => {
   const [sort, setSort] = useState("");
   const { category } = useParams();
   const fetchProductsByCategory = async (queries) => {
-    if(category && category !== 'products') queries.category = category;
+    if (category && category !== "products") queries.category = category;
     const response = await apiGetProducts(queries);
     if (response?.success) setProducts(response);
   };
-  
+
   useEffect(() => {
-    const queries = Object.fromEntries([...params])
+    const queries = Object.fromEntries([...params]);
     let priceQuery = {};
     for (let i of params) queries[i[0]] = i[1];
     if (queries.to && queries.from) {
@@ -84,23 +84,22 @@ const Products = () => {
   }, [sort]);
   return (
     <div className="w-full">
-      <div className="h-[81px]  bg-gray-100 flex justify-center items-center">
-        <div className="w-main">
-          <h3 className="font-semibold uppercase">{category}</h3>
+      <div className="h-[81px] bg-gray-100 flex justify-center items-center">
+        <div className="w-full max-w-screen-lg px-4">
+          <h3 className="font-semibold uppercase text-center">{category}</h3>
           <Breadcrumb category={category} />
         </div>
       </div>
-      <div className="w-main border p-4 justify-between mt-8 flex m-auto rounded-md">
-        <div className="w-4/5 flex-auto flex flex-col gap-3">
+      <div className="max-w-screen-lg mx-auto mt-8 flex flex-wrap justify-between border p-4">
+        <div className="w-full lg:w-3/5 xl:w-4/5 flex flex-col gap-3 px-4">
           <span className="font-semibold text-sm">Lọc</span>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col lg:flex-row gap-4">
             <SearchItem
               name="price"
               activeClick={activeClick}
               changeActiveFilter={changeActiveFilter}
               type="input"
             />
-
             <SearchItem
               name="color"
               activeClick={activeClick}
@@ -108,19 +107,19 @@ const Products = () => {
             />
           </div>
         </div>
-
-        <div className="w-1/5 flex flex-col gap-3">
+        <div className="w-full lg:w-2/5 xl:w-1/5 flex flex-col gap-3 px-4 mt-3">
           <span className="font-semibold text-sm">Tìm kiếm</span>
           <div className="w-full">
             <InputSelect
               value={sort}
               options={sorts}
               changeValue={changeValue}
+              className="w-full" // Thêm class để cố định kích thước của InputSelect
             />
           </div>
         </div>
       </div>
-      <div className="mt-8 w-main m-auto">
+      <div className="max-w-screen-lg mx-auto mt-8">
         <Masonry
           breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid flex mx-[-10px]"
@@ -131,11 +130,9 @@ const Products = () => {
           ))}
         </Masonry>
       </div>
-
-      <div className="w-main m-auto my-4 flex justify-end">
+      <div className="max-w-screen-lg mx-auto mt-10 p-2">
         <Pagination totalCount={products?.counts} />
       </div>
-      <div className="w-full h-[500px]"></div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { InputField, Button , Loading } from "components";
+import { InputField, Button, Loading } from "components";
 import {
   apiRegister,
   apiLogin,
@@ -13,7 +13,7 @@ import { login } from "store/user/userSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { validate } from "ultils/helpers";
-import {showModal} from 'store/app/appSlice'
+import { showModal } from "store/app/appSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Login = () => {
   const [invalidFields, setInvalidFields] = useState([]);
   const [isRegister, setIsRegister] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams();
   const resetPayload = () => {
     setPayload({
       email: "",
@@ -45,7 +45,7 @@ const Login = () => {
     const response = await apiForgotPassword({ email });
 
     if (response?.success) {
-      toast?.success(response?.mes);
+      toast.success(response?.mes);
     } else toast.warning(response?.mes);
   };
   useEffect(() => {
@@ -58,15 +58,19 @@ const Login = () => {
       : validate(data, setInvalidFields);
     if (invalids === 0) {
       if (isRegister) {
-        dispatch(showModal({
-          isShowModal: true,
-          modalChildren: <Loading />
-        }))
+        dispatch(
+          showModal({
+            isShowModal: true,
+            modalChildren: <Loading />,
+          })
+        );
         const response = await apiRegister(payload);
-        dispatch(showModal({
-          isShowModal: false,
-          modalChildren: null
-        }))
+        dispatch(
+          showModal({
+            isShowModal: false,
+            modalChildren: null,
+          })
+        );
         if (response?.success) {
           setIsVerifiedEmail(true);
         } else Swal.fire("Oops!", response?.mes, "error");
@@ -80,7 +84,9 @@ const Login = () => {
               userData: rs.userData,
             })
           );
-         searchParams.get('redirect') ? navigate(searchParams.get('redirect')) : navigate(`/${path.HOME}`);
+          searchParams.get("redirect")
+            ? navigate(searchParams.get("redirect"))
+            : navigate(`/${path.HOME}`);
         } else Swal.fire("Oops!", rs?.mes, "error");
       }
     }
@@ -88,10 +94,12 @@ const Login = () => {
   const finalRegister = async () => {
     const response = await apiFinalRegister(token);
     if (response?.success) {
-      Swal.fire("Đăng kí tài khoản thành công", response?.mes, "success").then(() => {
-        setIsRegister(false);
-        resetPayload();
-      });
+      Swal.fire("Đăng kí tài khoản thành công", response?.mes, "success").then(
+        () => {
+          setIsRegister(false);
+          resetPayload();
+        }
+      );
     } else Swal.fire("Oops!", response?.mes, "error");
     setIsVerifiedEmail(false);
     setToken("");
@@ -100,20 +108,20 @@ const Login = () => {
     <div className="w-screen h-screen flex justify-center items-center relative">
       {isVerifiedEmail && (
         <div className="absolute top-0 right-0 left-0 bottom-0 bg-overlay z-50 flex justify-center items-center">
-          <div className="bg-white w-[500px] rounded-md p-8">
+          <div className="bg-white w-[90%] md:w-[500px] rounded-md p-8">
             <h4 className="">
-              Chúng tôi đã gữi mã tới email của bạn. Vui lòng kiểm tra thư của bạn
-              và nhập mã:
+              Chúng tôi đã gữi mã tới email của bạn. Vui lòng kiểm tra thư của
+              bạn và nhập mã:
             </h4>
             <input
               type="text"
               value={token}
               onChange={(e) => setToken(e.target.value)}
-              className="p-2 border rounded-md outline-none"
+              className="p-2 border rounded-md outline-none w-full mt-4"
             />
             <button
               type="button"
-              className="rounded-md px-4 py-2 bg-blue-500 font-semibold text-white ml-4"
+              className="rounded-md px-4 py-2 bg-blue-500 font-semibold text-white mt-4"
               onClick={finalRegister}
             >
               Submit
@@ -122,32 +130,32 @@ const Login = () => {
         </div>
       )}
       {isForgotPassword && (
-        <div className="animate-slide-right absolute top-0 left-0 bottom-0 right-0 bg-gray-100 z-50 items-center flex flex-col py-8">
-          <div className="flex flex-col gap-4">
+        <div className="animate-slide-right absolute top-0 left-0 bottom-0 right-0 bg-gray-100 z-50 flex flex-col py-8 w-full items-center">
+          <div className="flex flex-col gap-4 w-full max-w-md px-4">
             <label htmlFor="email">Nhập email của bạn:</label>
             <input
               type="text"
               id="email"
-              className="w-[800px] pb-2 p-4 border-bottom outline-none placeholder:text-sm"
+              className="w-full pb-2 p-4 border-b outline-none placeholder:text-sm"
               placeholder="Exp: email@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <div className="flex items-center justify-end  w-full gap-4">
+            <div className="flex items-center justify-end w-full gap-4">
               <Button
-                className ="text-white font-semibold"
                 name="Trở về"
                 handleOnClick={() => setIsForgotPassword(false)}
-                style="px-8 py-4 rounded-md text-white-100 bg-yellow-500 text-semibold my-2 font-semibold"
-                
-              />
-              
+                style="px-8 py-4 rounded-md bg-yellow-500 text-gray-500 font-semibold"
+              >
+                Trở về
+              </Button>
               <Button
-                className ="px-8 py-4 rounded-md text-white-100 bg-blue-600 text-semibold my-2"
                 name="Gửi"
                 handleOnClick={handleForgotPassword}
-                style="px-8 py-4 rounded-md text-black bg-blue-600 text-semibold my-2"
-              />
+                style="px-8 py-4 rounded-md bg-blue-600 text-white font-semibold"
+              >
+                Gửi
+              </Button>
             </div>
           </div>
         </div>
@@ -157,13 +165,13 @@ const Login = () => {
         alt=""
         className="w-full h-full object-cover absolute z-0"
       />
-      <div className="p-8 bg-white flex flex-col items-center rounded-md min-w-[500px] relative z-10 top-[-50px]">
-        <h1 className="text-[28px] font-semibold text-main mb-8">
+      <div className="p-8 bg-white flex flex-col items-center rounded-md w-[90%] md:w-[500px] relative z-10">
+        <h1 className="text-[28px] font-semibold text-main">
           {isRegister ? "Đăng kí" : "Đăng nhập"}
         </h1>
 
         {isRegister && (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col md:flex-row items-center gap-2 w-full">
             <InputField
               value={payload.firstname}
               setValue={setPayload}

@@ -48,11 +48,11 @@ const CustomizeVarriants = ({
       dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
       const response = await apiAddVarriant(formData, customizeVarriant._id);
       dispatch(showModal({ isShowModal: false, modalChildren: null }));
-      if(response.success){
-        toast.success(response.mes)
-        reset()
-        setPreview({thumb: '', images: []})
-      } else toast.error(response.mes)
+      if (response.success) {
+        toast.success(response.mes);
+        reset();
+        setPreview({ thumb: "", images: [] });
+      } else toast.error(response.mes);
     }
   };
   const handlePreviewThumb = async (file) => {
@@ -86,13 +86,13 @@ const CustomizeVarriants = ({
       <div className="h-[69px] w-full"></div>
       <div className="p-4 border-b  bg-gray-100 flex justify-between right-0 left-[327px] items-center fixed top-0">
         <h1 className="text-3xl font-bold tracking-tight">
-          Tùy chỉnh thêm biến thể của sản phẩm
+          Customize additional product variations
         </h1>
         <span
           className="text-main hover:underline cursor-pointer"
           onClick={() => setCustomizeVarriant(null)}
         >
-          Quay lại
+          Back
         </span>
       </div>
       <form
@@ -101,40 +101,40 @@ const CustomizeVarriants = ({
       >
         <div className="flex gap-4 items-center w-full">
           <InputForm
-            label="Tên sản phẩm"
+            label="Product name"
             register={register}
             errors={errors}
             id="title"
             fullWidth
             validate={{
-              required: "Trường này không được để trống",
+              required: "This field cannot be left blank",
             }}
-            placeholder="Tên của sản phẩm"
+            placeholder="Name of the product"
             style="flex-auto"
           />
         </div>
         <div className="flex gap-4 items-center w-full">
           <InputForm
-            label="Giá tiền sản phẩm"
+            label="Product price"
             register={register}
             errors={errors}
             id="price"
             validate={{
-              required: "Trường này không được để trống",
+              required: "This field cannot be left blank",
             }}
             fullWidth
-            placeholder="Giá tiền của sản phẩm"
+            placeholder="Price of the product"
             type="number"
             style="flex-auto"
           />
 
           <InputForm
-            label="Màu sắc"
+            label="Color"
             register={register}
             errors={errors}
             id="color"
             validate={{
-              required: "Trường này không được để trống",
+              required: "This field cannot be left blank",
             }}
             fullWidth
             placeholder="Color of new varriant"
@@ -143,12 +143,14 @@ const CustomizeVarriants = ({
         </div>
         <div className="flex flex-col gap-2 mt-8">
           <label className="font-semibold" htmlFor="thumb">
-            Tải ảnh lên :
+            Upload photos :
           </label>
           <input
             type="file"
             id="thumb"
-            {...register("thumb", { required: "Trường này không được để trống" })}
+            {...register("thumb", {
+              required: "This field cannot be left blank",
+            })}
           />
           {errors["thumb"] && (
             <small className="text-xs text-red-500">
@@ -167,13 +169,15 @@ const CustomizeVarriants = ({
         )}
         <div className="flex flex-col gap-2 mt-8">
           <label className="font-semibold" htmlFor="products">
-            Tải ảnh sản phẩm :
+            Download product photos:
           </label>
           <input
             type="file"
             id="products"
             multiple
-            {...register("images", { required: "Trường này không được để trống" })}
+            {...register("images", {
+              required: "Trường này không được để trống",
+            })}
           />
           {errors["images"] && (
             <small className="text-xs text-red-500">
@@ -195,7 +199,7 @@ const CustomizeVarriants = ({
           </div>
         )}
         <div className="my-6">
-          <Button type="submit">Thêm sản phẩm</Button>
+          <Button type="submit">Add products</Button>
         </div>
       </form>
     </div>

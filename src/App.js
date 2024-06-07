@@ -11,7 +11,7 @@ import {
   Products,
   FinalRegister,
   ResetPassword,
-  DetailCart
+  DetailCart,
 } from "./pages/public";
 import {
   AdminLayout,
@@ -38,15 +38,22 @@ import { showCart } from "store/app/appSlice";
 
 function App() {
   const dispatch = useDispatch();
-  const { isShowModal, modalChildren, isShowCart } = useSelector((state) => state.app);
+  const { isShowModal, modalChildren, isShowCart } = useSelector(
+    (state) => state.app
+  );
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
   return (
     <div className="font-main h-screen">
-    {isShowCart && <div onClick={() => dispatch(showCart())} className ='absolute inset-0 bg-overlay z-50 flex justify-end'>
-        <Cart  />
-      </div>}
+      {isShowCart && (
+        <div
+          onClick={() => dispatch(showCart())}
+          className="absolute inset-0 bg-overlay z-50 flex justify-end"
+        >
+          <Cart />
+        </div>
+      )}
       {isShowModal && <Modal>{modalChildren}</Modal>}
       <Routes>
         <Route path={path.CHECKOUT} element={<Checkout />} />

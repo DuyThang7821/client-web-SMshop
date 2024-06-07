@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { apiGetUsers, apiUpdateUser , apiDeleteUser} from "apis/user";
+import { apiGetUsers, apiUpdateUser, apiDeleteUser } from "apis/user";
 import { blockStatus, roles } from "ultils/contants";
 import { InputField, Pagination, InputForm, Select, Button } from "components";
 import useDebounce from "hooks/useDebounce";
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import moment from "moment";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import clsx from "clsx";
 const ManageUser = () => {
@@ -14,7 +14,7 @@ const ManageUser = () => {
     handleSubmit,
     register,
     formState: { errors },
-    reset
+    reset,
   } = useForm({
     email: "",
     firstname: "",
@@ -37,9 +37,9 @@ const ManageUser = () => {
     });
     if (response?.success) setUsers(response);
   };
-  const render = useCallback(()=>{
-    setUpdate(!update)
-  },[update])
+  const render = useCallback(() => {
+    setUpdate(!update);
+  }, [update]);
   const queriesDebounce = useDebounce(queries.q, 800);
 
   useEffect(() => {
@@ -48,32 +48,31 @@ const ManageUser = () => {
     fetchUsers(queries);
   }, [queriesDebounce, params, update]);
   const handleUpdate = async (data) => {
-  const response = await apiUpdateUser(data, editElm._id);
-    if(response?.success) {
-      setEditElm(null)
-      render()
-      toast.success(response.mes)
-    }else toast.error(response.mes)
+    const response = await apiUpdateUser(data, editElm._id);
+    if (response?.success) {
+      setEditElm(null);
+      render();
+      toast.success(response.mes);
+    } else toast.error(response.mes);
   };
-  const handleDeleteUser = async(uid) =>{
+  const handleDeleteUser = async (uid) => {
     Swal.fire({
-      title: 'Are you sure',
+      title: "Are you sure",
       text: "Are you sure you want to delete user",
-      showCancelButton: true
-    }).then(async(result) =>{
-      if(result.isConfirmed){
-        const response = await apiDeleteUser(uid)
-        if(response?.success){
-          render()
-          toast.success(response.mes)
-        }else toast.error(response.mes)
+      showCancelButton: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await apiDeleteUser(uid);
+        if (response?.success) {
+          render();
+          toast.success(response.mes);
+        } else toast.error(response.mes);
       }
-    })
-
-  }
+    });
+  };
 
   return (
-    <div className={clsx("w-full", editElm && 'pl-16')}>
+    <div className={clsx("w-full", editElm && "pl-16")}>
       <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b">
         <span>QUẢN LÍ TÀI KHOẢN NGƯỜI DÙNG</span>
       </h1>
@@ -136,7 +135,9 @@ const ManageUser = () => {
                         fullWidth
                         errors={errors}
                         id={"firstname"}
-                        validate={{ required: "Trường này không được để trống" }}
+                        validate={{
+                          required: "Trường này không được để trống",
+                        }}
                       />
                     ) : (
                       <span>{el.firstname}</span>
@@ -150,7 +151,9 @@ const ManageUser = () => {
                         register={register}
                         errors={errors}
                         id={"lastname"}
-                        validate={{ required: "Trường này không được để trống" }}
+                        validate={{
+                          required: "Trường này không được để trống",
+                        }}
                       />
                     ) : (
                       <span>{el.lastname}</span>
@@ -159,13 +162,16 @@ const ManageUser = () => {
                   <td className="py-2 px-4">
                     {editElm?._id === el._id ? (
                       <Select
-                      defaultValue={el.role}
-                      fullWidth
-                      register={register}
-                      errors={errors}
-                      id={"role"}
-                      validate={{ required: "Trường này không được để trống" }} 
-                      options={roles} />
+                        defaultValue={el.role}
+                        fullWidth
+                        register={register}
+                        errors={errors}
+                        id={"role"}
+                        validate={{
+                          required: "Trường này không được để trống",
+                        }}
+                        options={roles}
+                      />
                     ) : (
                       <span>
                         {roles.find((role) => +role.code === +el.role)?.value}
@@ -197,13 +203,16 @@ const ManageUser = () => {
                   <td className="py-2 px-4">
                     {editElm?._id === el._id ? (
                       <Select
-                      defaultValue={el.isBlocked}
-                      fullWidth
-                      register={register}
-                      errors={errors}
-                      id={'isBlocked'}
-                      validate={{ required: "Trường này không được để trống" }}
-                      options={blockStatus}  />
+                        defaultValue={el.isBlocked}
+                        fullWidth
+                        register={register}
+                        errors={errors}
+                        id={"isBlocked"}
+                        validate={{
+                          required: "Trường này không được để trống",
+                        }}
+                        options={blockStatus}
+                      />
                     ) : (
                       <span>{el.isBlocked ? "Blocked" : "Active"}</span>
                     )}
@@ -227,7 +236,10 @@ const ManageUser = () => {
                         Sửa
                       </span>
                     )}
-                    <span onClick={() => handleDeleteUser(el._id)} className="px-2 text-red-700 hover:underline cursor-pointer">
+                    <span
+                      onClick={() => handleDeleteUser(el._id)}
+                      className="px-2 text-red-700 hover:underline cursor-pointer"
+                    >
                       Xóa
                     </span>
                   </td>

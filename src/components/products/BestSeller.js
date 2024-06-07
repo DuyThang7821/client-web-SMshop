@@ -1,13 +1,13 @@
 import React, { useEffect, useState, memo } from "react";
 import { apiGetProducts } from "../../apis/product";
 import { Product, CustomSlider } from "..";
-import {getNewProducts} from '../../store/products/asynsActions'
+import { getNewProducts } from "../../store/products/asynsActions";
 import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
+
 const tabs = [
   { id: 1, name: "mặt hàng bán chạy" },
   { id: 2, name: "sản phẩm mới nhất" },
-  //   { id: 3, name: "tablet" },
 ];
 
 const BestSeller = () => {
@@ -15,31 +15,34 @@ const BestSeller = () => {
   const [activedTab, setActivedTab] = useState(1);
   const [products, setProducts] = useState(null);
   const dispatch = useDispatch();
-  const {newProducts} = useSelector(state => state.products)
-  const {isShowModal} = useSelector(state => state.app)
+  const { newProducts } = useSelector((state) => state.products);
+  const { isShowModal } = useSelector((state) => state.app);
+
   const fetchProducts = async () => {
-    const response = await apiGetProducts({sort: '-sold'})
+    const response = await apiGetProducts({ sort: "-sold" });
     if (response?.success) {
       setBestSellers(response.products);
       setProducts(response.products);
     }
-
   };
+
   useEffect(() => {
     fetchProducts();
     dispatch(getNewProducts());
   }, []);
+
   useEffect(() => {
     if (activedTab === 1) setProducts(bestSellers);
     if (activedTab === 2) setProducts(newProducts);
-  }, [activedTab]);
+  }, [activedTab, bestSellers, newProducts]);
+
   return (
-    <div className={clsx(isShowModal ? 'hidden' : '')}>
-      <div className="flex text-[20px] ml-[-32px]">
+    <div className={clsx(isShowModal ? "hidden" : "")}>
+      <div className="flex text-[20px] ml-[-32px] sm:ml-0 flex-wrap justify-center mt-5">
         {tabs.map((el) => (
           <span
             key={el.id}
-            className={`font-semibold uppercase px-8 border-r cursor-pointer text-gray-400 ${
+            className={`font-semibold uppercase px-8  cursor-pointer text-gray-400 mt-5 ${
               activedTab === el.id ? "text-gray-900" : ""
             }`}
             onClick={() => setActivedTab(el.id)}
@@ -48,16 +51,15 @@ const BestSeller = () => {
           </span>
         ))}
       </div>
-      <div className="mt-4 mx-[-10px] border-t-2 border-main pt-4">
+      <div className="mt-4 mx-[-10px] sm:mx-0 border-t-2 border-main pt-4">
         <CustomSlider products={products} activedTab={activedTab} />
       </div>
-      <div className="w-full flex gap-4 mt-4">
+      <div className="w-full flex flex-col md:flex-row gap-4 mt-4">
         <img
           src="https://digital-world-2.myshopify.com/cdn/shop/files/banner2-home2_2000x_crop_center.png?v=1613166657"
           alt="banner"
           className="flex-1 object-contain"
         />
-
         <img
           src="https://digital-world-2.myshopify.com/cdn/shop/files/banner1-home2_2000x_crop_center.png?v=1613166657"
           alt="banner"
@@ -67,4 +69,5 @@ const BestSeller = () => {
     </div>
   );
 };
+
 export default memo(BestSeller);

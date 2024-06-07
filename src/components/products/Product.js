@@ -17,8 +17,10 @@ import path from "ultils/path";
 import { BsFillCartCheckFill, BsFillCartPlusFill } from "react-icons/bs";
 import { createSearchParams } from "react-router-dom";
 import clsx from "clsx";
+import { useMediaQuery } from "react-responsive";
 
 const { BsFillSuitHeartFill, AiFillEye } = icons;
+
 const Product = ({
   pid,
   productData,
@@ -31,6 +33,8 @@ const Product = ({
 }) => {
   const [isShowOption, setIshowOption] = useState(false);
   const { current } = useSelector((state) => state.user);
+  const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
   const handleClickOptions = async (e, flag) => {
     e.stopPropagation();
     if (flag === "CART") {
@@ -87,6 +91,7 @@ const Product = ({
       );
     }
   };
+
   return (
     <div className={clsx("w-full text-base px-[10px]", className)}>
       <div
@@ -108,7 +113,7 @@ const Product = ({
         }}
       >
         <div className="w-full relative">
-          {isShowOption && (
+          {(isShowOption || isMobile) && (
             <div className="absolute bottom-[8px] left-0 right-0 flex justify-center gap-2 animate-slide-top">
               <span
                 title="Quick view"
@@ -120,7 +125,6 @@ const Product = ({
                 (el) => el.product === productData?._id.toString()
               ) ? (
                 <span title="Added to cart">
-                  {" "}
                   <SelectOption icons={<BsFillCartCheckFill color="red" />} />
                 </span>
               ) : (
@@ -128,7 +132,6 @@ const Product = ({
                   title="Add to cart"
                   onClick={(e) => handleClickOptions(e, "CART")}
                 >
-                  {" "}
                   <SelectOption icons={<BsFillCartPlusFill />} />
                 </span>
               )}
@@ -136,7 +139,6 @@ const Product = ({
                 title="Add to wishlist"
                 onClick={(e) => handleClickOptions(e, "WISHLIST")}
               >
-                {" "}
                 <SelectOption
                   icons={
                     <BsFillSuitHeartFill
@@ -182,4 +184,5 @@ const Product = ({
     </div>
   );
 };
+
 export default WithBaseComponent(memo(Product));

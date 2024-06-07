@@ -3,7 +3,7 @@ import avatar from "assets/avatarDefault.jpg";
 import { adminSidebar, memberSidebar } from "ultils/contants";
 import { NavLink, Link } from "react-router-dom";
 import clsx from "clsx";
-import { TbArrowForwardUp} from 'react-icons/tb'
+import { TbArrowForwardUp } from "react-icons/tb";
 import {
   AiOutlineCaretDown,
   AiOutlineCaretLeft,
@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 
 const activeStyle =
   "px-4 py-2 flex items-center gap-2 bg-blue-600 text-gray-100";
-const notActiveStyle = "px-4 py-2 flex items-center  gap-2 hover:bg-blue-100";
+const notActiveStyle = "px-4 py-2 flex items-center gap-2";
 
 const MemberSidebar = () => {
   const [actived, setActived] = useState([]);
@@ -24,12 +24,12 @@ const MemberSidebar = () => {
     else setActived((prev) => [...prev, tabID]);
   };
   return (
-    <div className="bg-white h-full py-4 w-[280px] flex-none">
+    <div className="bg-white h-full py-4 w-[280px] md:flex-none mx-auto">
       <div className="w-full flex flex-col items-center justify-center py-4">
         <img
           src={current?.avatar || avatar}
           alt="logo"
-          className="w-16 h-16 object-cover rounded-full"
+          className="w-16 h-16 object-cover"
         />
         <small className="">{`${current?.lastname} ${current.firstname}`}</small>
       </div>
@@ -85,10 +85,12 @@ const MemberSidebar = () => {
                 )}
               </div>
             )}
-           
           </Fragment>
         ))}
-         <NavLink className={clsx(notActiveStyle)} to={"/"}><TbArrowForwardUp size={18} />Trang chủ</NavLink>
+        <NavLink className={clsx(notActiveStyle)} to={"/"}>
+          <TbArrowForwardUp size={18} />
+          Trang chủ
+        </NavLink>
       </div>
     </div>
   );

@@ -1,0 +1,20 @@
+/* Styles for mobile screens */
+@media (max-width: 768px) {
+    .mobile-only {
+      display: block;
+    }
+    .desktop-only {
+      display: none;
+    }
+  }
+  
+  /* Styles for PC screens */
+  @media (min-width: 769px) {
+    .mobile-only {
+      display: none;
+    }
+    .desktop-only {
+      display: block;
+    }
+  }
+  

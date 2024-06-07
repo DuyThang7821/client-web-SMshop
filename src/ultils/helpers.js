@@ -1,4 +1,3 @@
-import { generatePath } from "react-router-dom";
 import icons from "./icons";
 const { AiOutlineStar, AiFillStar } = icons;
 
@@ -64,34 +63,34 @@ export const validate = (payload, setInvalidFields) => {
         }
         break;
 
-        case "mobile":
-            if (arr[1].length < 10) {
-              invalids++;
-              setInvalidFields((prev) => [
-                ...prev,
-                { name: arr[0], mes: "Số điện thoại không hợp lệ" },
-              ]);
-            }
-            break;
+      case "mobile":
+        if (arr[1].length < 10) {
+          invalids++;
+          setInvalidFields((prev) => [
+            ...prev,
+            { name: arr[0], mes: "Số điện thoại không hợp lệ" },
+          ]);
+        }
+        break;
       default:
         break;
     }
   }
   return invalids;
 };
-export const formatPrice = number => Math.round(number / 1000) * 1000
+export const formatPrice = (number) => Math.round(number / 1000) * 1000;
 
-export const generateRange = (start, end) =>{
-  const length = end+1-start;
-  return Array.from({length}, (_, index) => start+ index);
-}
+export const generateRange = (start, end) => {
+  const length = end + 1 - start;
+  return Array.from({ length }, (_, index) => start + index);
+};
 
-export function getBase64(file){
-  if(!file) return ''
-  return new Promise((resolve, reject) =>{
+export function getBase64(file) {
+  if (!file) return "";
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  })
+    reader.onerror = (error) => reject(error);
+  });
 }

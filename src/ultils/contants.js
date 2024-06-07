@@ -1,34 +1,41 @@
 import path from "./path";
 import icons from "./icons";
 
+const { FaBook, FaHome, FaMobile, FaQuestionCircle, RiCustomerService2Line } =
+  icons;
 export const navigation = [
   {
     id: 1,
     value: "TRANG CHỦ",
     path: `/${path.HOME}`,
+    icon: <FaHome size={20} />,
   },
   {
     id: 2,
     value: "TẤT CẢ SẢN PHẨM",
     path: `/${path.PRODUCTS}`,
+    icon: <FaMobile size={20} />,
   },
 
   {
     id: 3,
     value: "BÀI VIẾT",
     path: `/${path.BLOGS}`,
+    icon: <FaBook size={20} />,
   },
 
   {
     id: 4,
     value: "DỊCH VỤ CỦA CHÚNG TÔI",
     path: `/${path.OUR_SERVICES}`,
+    icon: <RiCustomerService2Line size={20} />,
   },
 
   {
     id: 5,
     value: "FAQ",
     path: `/${path.FAQ}`,
+    icon: <FaQuestionCircle size={20} />,
   },
 ];
 const { RiTruckFill, BsShieldShaded, BsReplyFill, FaTty, AiFillGift } = icons;
@@ -252,7 +259,6 @@ export const adminSidebar = [
   },
 ];
 
-
 export const memberSidebar = [
   {
     id: 1,
@@ -313,14 +319,12 @@ export const blockStatus = [
 
 export const statusOrders = [
   {
-    label: 'Cancelled',
-    value: 'Cancelled'
+    label: "Cancelled",
+    value: "Cancelled",
   },
 
   {
-    label: 'Succeed',
-    value: 'Succeed'
+    label: "Succeed",
+    value: "Succeed",
   },
-
-
-]
+];

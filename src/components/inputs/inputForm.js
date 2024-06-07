@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import clsx from "clsx";
+
 const InputForm = ({
   label,
   disabled,
@@ -15,8 +16,18 @@ const InputForm = ({
   readOnly,
 }) => {
   return (
-    <div className={clsx("flex flex-col h-[78px] gap-2 mb-4", style)}>
-      {label && <label className="font-medium" htmlFor={id}>{label + ':'}</label>}
+    <div
+      className={clsx(
+        "flex flex-col h-[78px] gap-2 mb-4",
+        fullWidth && "w-full",
+        style
+      )}
+    >
+      {label && (
+        <label className="font-medium" htmlFor={id}>
+          {label + ":"}
+        </label>
+      )}
       <input
         type={type}
         id={id}
@@ -28,6 +39,8 @@ const InputForm = ({
         className={clsx(
           "form-input my-auto rounded-md outline-none p-3",
           fullWidth && "w-full",
+          "md:p-2", // Adjust padding for medium screens
+          "lg:p-3", // Adjust padding for large screens
           style
         )}
       />
